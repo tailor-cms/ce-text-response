@@ -14,7 +14,8 @@ export const name = 'Text response';
 // entity)
 export const initState: DataInitializer = (): ElementData => ({
   question: '',
-  correct: '',
+  correct: null,
+  hint: '',
 });
 
 // Can be loaded from package.json
@@ -29,18 +30,14 @@ const ui = {
   forceFullWidth: true,
 };
 
-export const mocks = {
-  displayContexts: [{ name: 'No selection', data: {} }],
-};
-
 const manifest: ElementManifest = {
   type,
   version: '1.0',
   name,
   ssr: false,
+  isQuestion: true,
   initState,
   ui,
-  mocks,
 };
 
 export default manifest;

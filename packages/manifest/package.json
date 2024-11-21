@@ -1,6 +1,6 @@
 {
   "name": "@tailor-cms/ce-text-response-manifest",
-  "description": "Tailor CMS text response element",
+  "description": "Tailor CMS text response manifest",
   "author": "Studion <info@gostudion.com> (https://github.com/tailor-cms)",
   "type": "module",
   "version": "0.0.1",
