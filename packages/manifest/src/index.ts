@@ -14,7 +14,6 @@ export const name = 'Text response';
 // entity)
 export const initState: DataInitializer = (): ElementData => ({
   question: '',
-  correct: null,
   hint: '',
 });
 
