@@ -39,7 +39,8 @@ export function afterRetrieve(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function beforeDisplay(element: Element, context: any) {
-  return { ...context, ...USER_STATE, correct: element.data.correct };
+  if (IS_CEK) USER_STATE.correct = element.data.correct;
+  return { ...context, ...USER_STATE };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -51,7 +52,7 @@ export function onUserInteraction(
   // Simulate user state update within CEK
   if (IS_CEK) {
     // Can be reset to initial / mocked state via UI
-    Object.assign(context, { response: payload.response, isSubmitted: true });
+    context.response = payload.response;
   }
   // Can have arbitrary return value (interpreted by target system)
   // FE is updated if updateDisplayState is true

@@ -1,6 +1,31 @@
 <template>
   <VForm ref="form" class="tce-root" @submit.prevent="submit">
-    <div class="px-2 my-4">{{ data.question }}</div>
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div class="rich-text px-2 my-4" v-html="data.question"></div>
+    <div v-if="data.hint" class="d-flex justify-end mb-4">
+      <VTooltip
+        v-model="showHint"
+        :open-on-hover="false"
+        location="bottom"
+        max-width="350"
+        close-on-back
+        open-on-click
+      >
+        <template #activator="{ isActive, props: tooltipProps }">
+          <VBtn
+            v-click-outside="() => (showHint = false)"
+            v-bind="tooltipProps"
+            :active="isActive"
+            :prepend-icon="`mdi-lightbulb-${isActive ? 'on' : 'outline'}`"
+            size="small"
+            text="Hint"
+            variant="text"
+            rounded
+          />
+        </template>
+        {{ data.hint }}
+      </VTooltip>
+    </div>
     <VTextarea
       v-model="response"
       :readonly="submitted"
@@ -12,7 +37,7 @@
     />
     <VAlert
       v-if="submitted"
-      :text="userState.correct"
+      :text="isGraded ? userState.correct : 'Submitted'"
       class="mb-3"
       rounded="lg"
       type="info"
@@ -26,19 +51,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ElementData } from '@tailor-cms/ce-text-response-manifest';
 
 const props = defineProps<{ id: number; data: ElementData; userState: any }>();
 const emit = defineEmits(['interaction']);
 
 const form = ref<HTMLFormElement>();
-const submitted = ref('isSubmitted' in (props.userState ?? {}));
+const showHint = ref(false);
+const submitted = ref(false);
 const response = ref<string[]>(props.userState?.response);
+
+const isGraded = computed(() => 'correct' in props.userState);
 
 const submit = async () => {
   const { valid } = await form.value?.validate();
-  if (valid) emit('interaction', { response: response.value });
+  if (valid) {
+    submitted.value = true;
+    emit('interaction', { response: response.value });
+  }
 };
 
 const requiredRule = (val: string | boolean | number) => {
@@ -49,7 +80,6 @@ watch(
   () => props.userState,
   (state = {}) => {
     response.value = state.response;
-    submitted.value = 'isSubmitted' in state;
   },
   { deep: true },
 );

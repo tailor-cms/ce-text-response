@@ -1,7 +1,6 @@
-// Example counter component
 export interface ElementData {
   question: string;
-  correct?: string | null;
+  correct?: string;
   hint: string;
 }
 
