@@ -1,58 +1,30 @@
 <template>
-  <VForm
-    ref="form"
-    class="tce-text-response my-4"
-    validate-on="submit"
-    @submit.prevent="save"
+  <QuestionContainer
+    v-bind="{
+      allowedEmbedTypes,
+      elementData,
+      isDirty,
+      isDisabled,
+      isGradeable,
+    }"
+    :show-feedback="false"
+    @cancel="updateData(element.data)"
+    @save="save"
+    @update="updateData($event)"
   >
-    <div class="text-subtitle-2 mb-2">Question</div>
-    <RichTextEditor
-      v-model="elementData.question"
-      :readonly="isDisabled"
-      :rules="[requiredRule]"
-      class="my-3"
-      variant="outlined"
-    />
     <div class="text-subtitle-2 mb-2">Answer</div>
     <VTextarea
       v-model="elementData.correct"
       :clearable="!isDisabled"
-      :disabled="!isGraded"
+      :disabled="!isGradeable"
       :readonly="isDisabled"
-      :rules="[requiredRule]"
+      :rules="[(val: string) => !!val || 'Answer is required']"
       class="my-3"
       rows="3"
       variant="outlined"
       auto-grow
     />
-    <div class="text-subtitle-2 mb-2">Hint</div>
-    <VTextField
-      v-model="elementData.hint"
-      :clearable="!isDisabled"
-      :readonly="isDisabled"
-      placeholder="Optional hint..."
-      variant="outlined"
-    />
-    <div v-if="!isDisabled" class="d-flex justify-end">
-      <VBtn
-        :disabled="isDirty"
-        color="primary-darken-4"
-        variant="text"
-        @click="cancel"
-      >
-        Cancel
-      </VBtn>
-      <VBtn
-        :disabled="isDirty"
-        class="ml-2"
-        color="primary-darken-3"
-        type="submit"
-        variant="tonal"
-      >
-        Save
-      </VBtn>
-    </div>
-  </VForm>
+  </QuestionContainer>
 </template>
 
 <script lang="ts" setup>
@@ -60,49 +32,28 @@ import { computed, defineEmits, defineProps, reactive, ref, watch } from 'vue';
 import { Element, ElementData } from '@tailor-cms/ce-text-response-manifest';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
-import { RichTextEditor } from '@tailor-cms/core-components';
+import { QuestionContainer } from '@tailor-cms/core-components';
 
 const emit = defineEmits(['save']);
 const props = defineProps<{
+  allowedEmbedTypes: string[];
   element: Element;
-  isGraded: boolean;
   isFocused: boolean;
   isDisabled: boolean;
+  isGradeable: boolean;
 }>();
 
-const form = ref<HTMLFormElement>();
 const elementData = reactive<ElementData>(cloneDeep(props.element.data));
 
-const isDirty = computed(() => isEqual(elementData, props.element.data));
+const isDirty = computed(() => !isEqual(elementData, props.element.data));
 
-const save = async () => {
-  const { valid } = await form.value?.validate();
-  if (valid) emit('save', elementData);
+const save = () => emit('save', elementData);
+
+const updateData = (data: ElementData) => {
+  Object.assign(elementData, cloneDeep(data));
 };
 
-const cancel = () => {
-  Object.assign(elementData, cloneDeep(props.element.data));
-  form.value?.resetValidation();
-};
-
-const requiredRule = (val: string | boolean | number) => {
-  return !!val || 'The field is required';
-};
-
-watch(
-  () => props.element.data,
-  (data) => Object.assign(elementData, cloneDeep(data)),
-);
-
-watch(
-  () => props.isGraded,
-  (val) => {
-    if (!val) delete elementData.correct;
-    else elementData.correct = '';
-    emit('save', elementData);
-  },
-  { immediate: true },
-);
+watch(() => props.element.data, updateData);
 </script>
 
 <style lang="scss" scoped>

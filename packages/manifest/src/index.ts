@@ -13,7 +13,9 @@ export const name = 'Text response';
 // Function which inits element state (data property on the Content Element
 // entity)
 export const initState: DataInitializer = (): ElementData => ({
-  question: '',
+  correct: '',
+  embeds: {},
+  question: [],
   hint: '',
 });
 
@@ -34,6 +36,7 @@ const manifest: ElementManifest = {
   version: '1.0',
   name,
   ssr: false,
+  isComposite: true,
   isQuestion: true,
   initState,
   ui,
