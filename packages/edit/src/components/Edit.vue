@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, reactive, ref, watch } from 'vue';
+import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
 import { Element, ElementData } from '@tailor-cms/ce-text-response-manifest';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
