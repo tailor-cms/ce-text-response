@@ -33,7 +33,7 @@ const emit = defineEmits(['interaction']);
 const isSubmitted = ref(!!props.userState.isSubmitted);
 const answer = ref<string>(props.userState?.response);
 
-const isGraded = computed(() => 'correct' in props.userState);
+const isGraded = computed(() => 'isCorrect' in props.userState);
 
 const submit = () => emit('interaction', { response: answer.value });
 
