@@ -16,7 +16,7 @@
       class="my-3"
       label="Answer"
       rows="3"
-      variant=outlined
+      variant="outlined"
       auto-grow
     />
   </QuestionContainer>
