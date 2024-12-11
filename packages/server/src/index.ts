@@ -51,7 +51,6 @@ export function onUserInteraction(
 ): any {
   const isGradeable = 'correct' in element.data;
   const isCorrect = element.data.correct === payload.response;
-  debugger;
   // Simulate user state update within CEK
   if (IS_CEK) {
     // Can be reset to initial / mocked state via UI
