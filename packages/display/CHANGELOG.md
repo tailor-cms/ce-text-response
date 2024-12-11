@@ -1,5 +1,11 @@
 # @tailor-cms/ce-text-response-display
 
+## 0.0.5
+
+### Patch Changes
+
+- Tweak end-user component isGraded check.
+
 ## 0.0.4
 
 ### Patch Changes
