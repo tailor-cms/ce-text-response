@@ -1,5 +1,11 @@
 # @tailor-cms/ce-text-response-server
 
+## 0.0.3
+
+### Patch Changes
+
+- Removed leftover debugger statement.
+
 ## 0.0.2
 
 ### Patch Changes
