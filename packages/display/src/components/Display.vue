@@ -1,85 +1,47 @@
 <template>
-  <VForm ref="form" class="tce-root" @submit.prevent="submit">
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="rich-text px-2 my-4" v-html="data.question"></div>
-    <div v-if="data.hint" class="d-flex justify-end mb-4">
-      <VTooltip
-        v-model="showHint"
-        :open-on-hover="false"
-        location="bottom"
-        max-width="350"
-        close-on-back
-        open-on-click
-      >
-        <template #activator="{ isActive, props: tooltipProps }">
-          <VBtn
-            v-click-outside="() => (showHint = false)"
-            v-bind="tooltipProps"
-            :active="isActive"
-            :prepend-icon="`mdi-lightbulb-${isActive ? 'on' : 'outline'}`"
-            size="small"
-            text="Hint"
-            variant="text"
-            rounded
-          />
-        </template>
-        {{ data.hint }}
-      </VTooltip>
-    </div>
+  <QuestionContainer
+    :data="data"
+    :is-correct="userState.isCorrect"
+    :is-graded="isGraded"
+    :is-submitted="isSubmitted"
+    allowed-retake
+    @retry="isSubmitted = false"
+    @submit="submit"
+  >
+    <div class="text-subtitle-2 mb-2">Enter your answer:</div>
     <VTextarea
-      v-model="response"
-      :readonly="submitted"
-      :rules="[requiredRule]"
+      v-model="answer"
+      :readonly="isSubmitted"
+      :rules="[(val: string) => !!val || 'You have to enter your answer.']"
       class="my-3"
       label="Answer"
       rows="3"
+      variant=outlined
       auto-grow
     />
-    <VAlert
-      v-if="submitted"
-      :text="isGraded ? userState.correct : 'Submitted'"
-      class="mb-3"
-      rounded="lg"
-      type="info"
-      variant="tonal"
-    />
-    <div class="d-flex justify-end">
-      <VBtn v-if="!submitted" type="submit" variant="tonal">Submit</VBtn>
-      <VBtn v-else variant="tonal" @click="submitted = false">Try Again</VBtn>
-    </div>
-  </VForm>
+  </QuestionContainer>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { ElementData } from '@tailor-cms/ce-text-response-manifest';
+import { QuestionContainer } from '@tailor-cms/lx-components';
 
 const props = defineProps<{ id: number; data: ElementData; userState: any }>();
 const emit = defineEmits(['interaction']);
 
-const form = ref<HTMLFormElement>();
-const showHint = ref(false);
-const submitted = ref(false);
-const response = ref<string[]>(props.userState?.response);
+const isSubmitted = ref(!!props.userState.isSubmitted);
+const answer = ref<string>(props.userState?.response);
 
 const isGraded = computed(() => 'correct' in props.userState);
 
-const submit = async () => {
-  const { valid } = await form.value?.validate();
-  if (valid) {
-    submitted.value = true;
-    emit('interaction', { response: response.value });
-  }
-};
-
-const requiredRule = (val: string | boolean | number) => {
-  return !!val || 'You have to enter your answer.';
-};
+const submit = () => emit('interaction', { response: answer.value });
 
 watch(
   () => props.userState,
   (state = {}) => {
-    response.value = state.response;
+    answer.value = state.response;
+    isSubmitted.value = !!state.isSubmitted;
   },
   { deep: true },
 );
