@@ -12,18 +12,19 @@
     @save="save"
     @update="updateData($event)"
   >
-    <div class="text-subtitle-2 mb-2">Answer</div>
-    <VTextarea
-      v-model="elementData.correct"
-      :clearable="!isDisabled"
-      :disabled="!isGradeable"
-      :readonly="isDisabled"
-      :rules="[(val: string) => !!val || 'Answer is required']"
-      class="my-3"
-      rows="3"
-      variant="outlined"
-      auto-grow
-    />
+    <template v-if="isGradeable">
+      <div class="text-subtitle-2 mb-2">Answer</div>
+      <VTextarea
+        v-model="elementData.correct"
+        :clearable="!isDisabled"
+        :readonly="isDisabled"
+        :rules="[(val: string) => !!val || 'Answer is required']"
+        class="my-3"
+        rows="3"
+        variant="outlined"
+        auto-grow
+      />
+    </template>
   </QuestionContainer>
 </template>
 
@@ -55,9 +56,3 @@ const updateData = (data: ElementData) => {
 
 watch(() => props.element.data, updateData);
 </script>
-
-<style lang="scss" scoped>
-.tce-container {
-  text-align: left;
-}
-</style>
