@@ -1,5 +1,11 @@
 # @tailor-cms/ce-text-response-server
 
+## 0.0.7
+
+### Patch Changes
+
+- Bumped tce-display-runtime.
+
 ## 0.0.6
 
 ### Patch Changes
