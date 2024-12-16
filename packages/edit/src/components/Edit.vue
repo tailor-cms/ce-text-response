@@ -1,18 +1,19 @@
 <template>
   <QuestionContainer
     v-bind="{
-      allowedEmbedTypes,
+      type: manifest.name,
+      icon: manifest.ui.icon,
+      embedTypes,
       elementData,
       isDirty,
       isDisabled,
-      isGradeable,
     }"
     :show-feedback="false"
     @cancel="updateData(element.data)"
     @save="save"
     @update="updateData($event)"
   >
-    <template v-if="isGradeable">
+    <template v-if="isGradable">
       <div class="text-subtitle-2 mb-2">Answer</div>
       <VTextarea
         v-model="elementData.correct"
@@ -30,20 +31,23 @@
 
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
-import { Element, ElementData } from '@tailor-cms/ce-text-response-manifest';
+import manifest, {
+  Element,
+  ElementData,
+} from '@tailor-cms/ce-text-response-manifest';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import { QuestionContainer } from '@tailor-cms/core-components';
 
 const emit = defineEmits(['save']);
 const props = defineProps<{
-  allowedEmbedTypes: string[];
+  embedTypes: any[];
   element: Element;
   isFocused: boolean;
   isDisabled: boolean;
-  isGradeable: boolean;
 }>();
 
+const isGradable = computed(() => props.element.data.isGradable);
 const elementData = reactive<ElementData>(cloneDeep(props.element.data));
 
 const isDirty = computed(() => !isEqual(elementData, props.element.data));
