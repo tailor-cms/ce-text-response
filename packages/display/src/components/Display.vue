@@ -1,63 +1,48 @@
 <template>
-  <VForm ref="form" class="tce-root" @submit.prevent="submit">
-    <div class="px-2 my-4">{{ data.question }}</div>
+  <QuestionContainer
+    :data="data"
+    :is-correct="userState.isCorrect"
+    :is-graded="isGraded"
+    :is-submitted="isSubmitted"
+    allowed-retake
+    @retry="isSubmitted = false"
+    @submit="submit"
+  >
+    <div class="text-subtitle-2 mb-2">Enter your answer:</div>
     <VTextarea
-      v-model="response"
-      :readonly="submitted"
-      :rules="[requiredRule]"
+      v-model="answer"
+      :readonly="isSubmitted"
+      :rules="[(val: string) => !!val || 'You have to enter your answer.']"
       class="my-3"
       label="Answer"
       rows="3"
+      variant="outlined"
       auto-grow
     />
-    <VAlert
-      v-if="submitted"
-      :text="userState.correct"
-      class="mb-3"
-      rounded="lg"
-      type="info"
-      variant="tonal"
-    />
-    <div class="d-flex justify-end">
-      <VBtn v-if="!submitted" type="submit" variant="tonal">Submit</VBtn>
-      <VBtn v-else variant="tonal" @click="submitted = false">Try Again</VBtn>
-    </div>
-  </VForm>
+  </QuestionContainer>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ElementData } from '@tailor-cms/ce-text-response-manifest';
+import { QuestionContainer } from '@tailor-cms/lx-components';
 
 const props = defineProps<{ id: number; data: ElementData; userState: any }>();
 const emit = defineEmits(['interaction']);
 
-const form = ref<HTMLFormElement>();
-const submitted = ref('isSubmitted' in (props.userState ?? {}));
-const response = ref<string[]>(props.userState?.response);
+const isSubmitted = ref(!!props.userState.isSubmitted);
+const answer = ref<string>(props.userState?.response);
 
-const submit = async () => {
-  const { valid } = await form.value?.validate();
-  if (valid) emit('interaction', { response: response.value });
-};
+const isGraded = computed(() => 'isCorrect' in props.userState);
 
-const requiredRule = (val: string | boolean | number) => {
-  return !!val || 'You have to enter your answer.';
-};
+const submit = () => emit('interaction', { response: answer.value });
 
 watch(
   () => props.userState,
   (state = {}) => {
-    response.value = state.response;
-    submitted.value = 'isSubmitted' in state;
+    answer.value = state.response;
+    isSubmitted.value = !!state.isSubmitted;
   },
   { deep: true },
 );
 </script>
-
-<style scoped>
-.tce-root {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-}
-</style>
