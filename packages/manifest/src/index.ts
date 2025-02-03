@@ -15,7 +15,6 @@ export const name = 'Text response';
 export const initState: DataInitializer = (): ElementData => ({
   correct: '',
   embeds: {},
-  question: [],
   hint: '',
 });
 

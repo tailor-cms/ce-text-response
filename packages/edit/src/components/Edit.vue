@@ -1,62 +1,42 @@
 <template>
   <QuestionContainer
     v-bind="{
-      type: manifest.name,
-      icon: manifest.ui.icon,
       elementData,
       embedElementConfig,
-      isDirty,
       isDisabled,
     }"
     :show-feedback="false"
-    @cancel="updateData(element.data)"
-    @save="save"
-    @update="updateData($event)"
+    @update="emit('update', $event)"
   >
-    <template v-if="isGradable">
+    <template v-if="elementData.isGradable">
       <div class="text-subtitle-2 mb-2">Answer</div>
       <VTextarea
-        v-model="elementData.correct"
         :clearable="!isDisabled"
+        :model-value="elementData.correct"
         :readonly="isDisabled"
         :rules="[(val: string) => !!val || 'Answer is required']"
         class="my-3"
         rows="3"
         variant="outlined"
         auto-grow
+        @update:model-value="emit('update', { correct: $event })"
       />
     </template>
   </QuestionContainer>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
-import manifest, {
-  Element,
-  ElementData,
-} from '@tailor-cms/ce-text-response-manifest';
-import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
+import { computed, defineEmits, defineProps } from 'vue';
+import { Element } from '@tailor-cms/ce-text-response-manifest';
 import { QuestionContainer } from '@tailor-cms/core-components';
 
-const emit = defineEmits(['save']);
 const props = defineProps<{
   element: Element;
   embedElementConfig: any[];
   isFocused: boolean;
   isDisabled: boolean;
 }>();
+const emit = defineEmits(['save', 'update']);
 
-const isGradable = computed(() => props.element.data.isGradable);
-const elementData = reactive<ElementData>(cloneDeep(props.element.data));
-
-const isDirty = computed(() => !isEqual(elementData, props.element.data));
-
-const save = () => emit('save', elementData);
-
-const updateData = (data: ElementData) => {
-  Object.assign(elementData, cloneDeep(data));
-};
-
-watch(() => props.element.data, updateData);
+const elementData = computed(() => props.element.data);
 </script>
