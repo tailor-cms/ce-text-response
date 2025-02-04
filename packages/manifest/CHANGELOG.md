@@ -1,5 +1,11 @@
 # @tailor-cms/ce-text-response-manifest
 
+## 0.0.11
+
+### Patch Changes
+
+- Bumped core-components package.
+
 ## 0.0.10
 
 ### Patch Changes
