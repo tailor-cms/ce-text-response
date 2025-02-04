@@ -13,8 +13,9 @@ export const name = 'Text response';
 // Function which inits element state (data property on the Content Element
 // entity)
 export const initState: DataInitializer = (): ElementData => ({
-  correct: '',
   embeds: {},
+  question: [],
+  correct: '',
   hint: '',
 });
 
