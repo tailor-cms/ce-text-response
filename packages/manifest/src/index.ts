@@ -8,7 +8,7 @@ import type {
 export const type = 'TEXT_RESPONSE';
 
 // Display name (e.g. shown to the author)
-export const name = 'Text response';
+export const name = 'Text Response';
 
 // Function which inits element state (data property on the Content Element
 // entity)
