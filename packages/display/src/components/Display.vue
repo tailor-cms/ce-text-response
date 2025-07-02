@@ -1,6 +1,6 @@
 <template>
   <QuestionContainer
-    :data="data"
+    :data="element.data"
     :is-correct="userState.isCorrect"
     :is-graded="isGraded"
     :is-submitted="isSubmitted"
@@ -24,10 +24,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { ElementData } from '@tailor-cms/ce-text-response-manifest';
+import { Element } from '@tailor-cms/ce-text-response-manifest';
 import { QuestionContainer } from '@tailor-cms/lx-components';
 
-const props = defineProps<{ id: number; data: ElementData; userState: any }>();
+const props = defineProps<{ element: Element; userState: any }>();
 const emit = defineEmits(['interaction']);
 
 const isSubmitted = ref(!!props.userState.isSubmitted);
