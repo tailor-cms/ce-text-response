@@ -9,10 +9,11 @@
     @submit="submit"
   >
     <div class="text-subtitle-2 mb-2">Enter your answer:</div>
-    <VTextarea
+    <VTextField
       v-model="answer"
       :readonly="isSubmitted"
       :rules="[(val: string) => !!val || 'You have to enter your answer.']"
+      bg-color="white"
       class="my-3"
       label="Answer"
       rows="3"
