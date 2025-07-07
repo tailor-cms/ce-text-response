@@ -62,20 +62,20 @@ export const ai = {
       - 'correct' is the correct answer to the question.
       - 'hint' is an optional hint for the correct solution
   `,
-  processResponse: (data: any) => {
+  processResponse: (val: any) => {
     const questionId = uuid();
     const question = {
       id: questionId,
-      data: { content: data.question },
+      data: { content: val.question },
       embedded: true,
       position: 1,
       type: 'TIPTAP_HTML',
     };
     return {
       isGradable: true,
+      hint: val.hint || '',
+      correct: val.correct || '',
       question: [questionId],
-      hint: data.hint || '',
-      correct: data.correct || '',
       embeds: { [questionId]: question },
     };
   },
