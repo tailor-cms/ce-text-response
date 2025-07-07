@@ -29,14 +29,14 @@
   },
   "devDependencies": {
     "@tailor-cms/ce-text-response-manifest": "workspace:*",
-    "@tailor-cms/eslint-config": "1.0.3",
+    "@tailor-cms/eslint-config": "1.1.1",
     "@vitejs/plugin-vue": "^6.0.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.2",
     "vue-tsc": "^3.0.1"
   },
   "dependencies": {
-    "@tailor-cms/lx-components": "^0.1.1"
+    "@tailor-cms/lx-components": "^0.1.2"
   },
   "publishConfig": {
     "access": "public"
