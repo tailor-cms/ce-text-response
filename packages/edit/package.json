@@ -39,6 +39,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@tailor-cms/core-components": "^1.1.2"
+    "@tailor-cms/core-components": "^1.2.0"
   }
 }
