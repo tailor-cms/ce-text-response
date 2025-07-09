@@ -1,3 +1,6 @@
+import { OpenAISchema } from '@tailor-cms/cek-common';
+import { v4 as uuid } from 'uuid';
+
 import type {
   DataInitializer,
   ElementData,
@@ -31,6 +34,53 @@ const ui = {
   forceFullWidth: true,
 };
 
+export const ai = {
+  Schema: {
+    type: 'json_schema',
+    name: 'ce_text_response',
+    schema: {
+      type: 'object',
+      properties: {
+        question: { type: 'string' },
+        correct: { type: 'string' },
+        hint: { type: 'string' },
+      },
+      required: ['question', 'correct', 'hint'],
+      additionalProperties: false,
+    },
+  } as OpenAISchema,
+  getPrompt: () => `
+    Generate a text response question as an object with the following
+    properties:
+    {
+      "question": "",
+      correct": "",
+      "hint": "",
+    }
+    where:
+      - 'question' is the question prompt.
+      - 'correct' is the correct answer to the question.
+      - 'hint' is an optional hint for the correct solution
+  `,
+  processResponse: (val: any) => {
+    const questionId = uuid();
+    const question = {
+      id: questionId,
+      data: { content: val.question },
+      embedded: true,
+      position: 1,
+      type: 'TIPTAP_HTML',
+    };
+    return {
+      isGradable: true,
+      hint: val.hint || '',
+      correct: val.correct || '',
+      question: [questionId],
+      embeds: { [questionId]: question },
+    };
+  },
+};
+
 const manifest: ElementManifest = {
   type,
   version: '1.0',
@@ -40,6 +90,7 @@ const manifest: ElementManifest = {
   isQuestion: true,
   initState,
   ui,
+  ai,
 };
 
 export default manifest;

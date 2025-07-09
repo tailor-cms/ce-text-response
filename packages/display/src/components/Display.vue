@@ -1,6 +1,6 @@
 <template>
   <QuestionContainer
-    :data="data"
+    :data="element.data"
     :is-correct="userState.isCorrect"
     :is-graded="isGraded"
     :is-submitted="isSubmitted"
@@ -9,10 +9,11 @@
     @submit="submit"
   >
     <div class="text-subtitle-2 mb-2">Enter your answer:</div>
-    <VTextarea
+    <VTextField
       v-model="answer"
       :readonly="isSubmitted"
       :rules="[(val: string) => !!val || 'You have to enter your answer.']"
+      bg-color="white"
       class="my-3"
       label="Answer"
       rows="3"
@@ -24,10 +25,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { ElementData } from '@tailor-cms/ce-text-response-manifest';
+import { Element } from '@tailor-cms/ce-text-response-manifest';
 import { QuestionContainer } from '@tailor-cms/lx-components';
 
-const props = defineProps<{ id: number; data: ElementData; userState: any }>();
+const props = defineProps<{ element: Element; userState: any }>();
 const emit = defineEmits(['interaction']);
 
 const isSubmitted = ref(!!props.userState.isSubmitted);

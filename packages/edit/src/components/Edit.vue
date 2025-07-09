@@ -3,7 +3,7 @@
     v-bind="{
       elementData,
       embedElementConfig,
-      isDisabled,
+      isReadonly,
     }"
     :show-feedback="false"
     @update="emit('update', $event)"
@@ -11,9 +11,9 @@
     <template v-if="elementData.isGradable">
       <div class="text-subtitle-2 mb-2">Answer</div>
       <VTextarea
-        :clearable="!isDisabled"
+        :clearable="!isReadonly"
         :model-value="elementData.correct"
-        :readonly="isDisabled"
+        :readonly="isReadonly"
         :rules="[(val: string) => !!val || 'Answer is required']"
         class="my-3"
         rows="3"
@@ -33,8 +33,9 @@ import { QuestionContainer } from '@tailor-cms/core-components';
 const props = defineProps<{
   element: Element;
   embedElementConfig: any[];
+  isDragged: boolean;
   isFocused: boolean;
-  isDisabled: boolean;
+  isReadonly: boolean;
 }>();
 const emit = defineEmits(['save', 'update']);
 
