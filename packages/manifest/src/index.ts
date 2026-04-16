@@ -54,7 +54,7 @@ export const ai = {
     properties:
     {
       "question": "",
-      correct": "",
+      "correct": "",
       "hint": "",
     }
     where:
