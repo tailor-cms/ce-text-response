@@ -24,7 +24,6 @@ Free-text response question element. The author writes a question prompt and opt
 
 - Renders the question prompt
 - Textarea for the learner answer
-- Submits response via `submit` (exposed)
 
 ## Development
 

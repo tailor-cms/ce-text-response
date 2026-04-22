@@ -5,7 +5,6 @@
       v-model="answer"
       :readonly="isSubmitted"
       :rules="[(val: string) => !!val || 'You have to enter your answer.']"
-      bg-color="white"
       class="my-3"
       label="Answer"
       rows="3"
@@ -21,15 +20,13 @@ import type { Element } from '@tailor-cms/ce-text-response-manifest';
 
 const props = defineProps<{ element: Element; userState: any }>();
 const emit = defineEmits<{
-  interaction: [data: { response: string }];
+  'user-input': [data: { response: string }];
 }>();
 
 const isSubmitted = ref(!!props.userState?.isSubmitted);
 const answer = ref<string>(props.userState?.response ?? '');
 
-const submit = () => emit('interaction', { response: answer.value });
-
-defineExpose({ submit });
+watch(answer, (val) => emit('user-input', { response: val }));
 
 watch(
   () => props.userState,

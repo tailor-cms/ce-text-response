@@ -58,8 +58,6 @@ export const onUserInteraction: OnUserInteractionHook<Element> = (
       isSubmitted: true,
     });
   }
-  // Can have arbitrary return value (interpreted by target system)
-  // FE is updated if updateDisplayState is true
   return { isCorrect, updateDisplayState: true };
 };
 
