@@ -19,10 +19,6 @@ const IS_CEK = process.env.CEK_RUNTIME;
 // Don't use in production, use only when IS_CEK=true
 const USER_STATE: any = {};
 
-export const beforeSave: ElementHook<Element> = (element) => element;
-
-export const afterSave: ElementHook<Element> = (element) => element;
-
 export const afterLoaded: ElementHook<Element> = (
   element,
   _services,
@@ -34,8 +30,6 @@ export const afterLoaded: ElementHook<Element> = (
   }
   return element;
 };
-
-export const afterRetrieve: ElementHook<Element> = (element) => element;
 
 export const beforeDisplay: BeforeDisplayHook<Element> = (element, context) => {
   if (IS_CEK) USER_STATE.correct = element.data.correct;
@@ -63,10 +57,7 @@ export const onUserInteraction: OnUserInteractionHook<Element> = (
 
 export const hookMap: HookMap<Element> = new Map(
   Object.entries({
-    beforeSave,
-    afterSave,
     afterLoaded,
-    afterRetrieve,
     onUserInteraction,
     beforeDisplay,
   }),
@@ -76,10 +67,7 @@ const serverModule: ServerModule<Element> = {
   type,
   initState,
   hookMap,
-  beforeSave,
-  afterSave,
   afterLoaded,
-  afterRetrieve,
   onUserInteraction,
   beforeDisplay,
   mocks,
