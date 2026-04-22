@@ -1,15 +1,7 @@
 <template>
-  <QuestionContainer
-    v-bind="{
-      elementData,
-      embedElementConfig,
-      isReadonly,
-    }"
-    :show-feedback="false"
-    @update="emit('update', $event)"
-  >
+  <div class="tce-text-response">
     <template v-if="elementData.isGradable">
-      <div class="text-subtitle-2 mb-2">Answer</div>
+      <div class="text-title-small mb-2">Answer</div>
       <VTextarea
         :clearable="!isReadonly"
         :model-value="elementData.correct"
@@ -22,13 +14,15 @@
         @update:model-value="emit('update', { correct: $event })"
       />
     </template>
-  </QuestionContainer>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps } from 'vue';
-import { Element } from '@tailor-cms/ce-text-response-manifest';
-import { QuestionContainer } from '@tailor-cms/core-components';
+import { computed } from 'vue';
+import type {
+  Element,
+  ElementData,
+} from '@tailor-cms/ce-text-response-manifest';
 
 const props = defineProps<{
   element: Element;
@@ -37,7 +31,16 @@ const props = defineProps<{
   isFocused: boolean;
   isReadonly: boolean;
 }>();
-const emit = defineEmits(['save', 'update']);
+
+const emit = defineEmits<{
+  update: [data: Partial<ElementData>];
+}>();
 
 const elementData = computed(() => props.element.data);
 </script>
+
+<style lang="scss" scoped>
+.tce-text-response {
+  text-align: left;
+}
+</style>
