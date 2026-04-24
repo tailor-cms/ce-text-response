@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import type {
   Element,
   ElementData,
 } from '@tailor-cms/ce-text-response-manifest';
+import { computed } from 'vue';
 
 const props = defineProps<{
   element: Element;
