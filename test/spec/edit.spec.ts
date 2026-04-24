@@ -45,3 +45,11 @@ test.describe('Non-gradable mode', () => {
     await expect(edit.answerTextarea).not.toBeVisible();
   });
 });
+
+test.describe('Readonly mode', () => {
+  test('Textarea is readonly', async ({ page }) => {
+    const edit = new Edit(page);
+    await edit.setReadonly();
+    await expect(edit.answerTextarea).toHaveAttribute('readonly');
+  });
+});
