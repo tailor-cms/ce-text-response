@@ -29,7 +29,8 @@ export const initState: DataInitializer = (config): ElementData => {
 // Can be loaded from package.json
 export const version = '1.0';
 
-export const isEmpty = (data: ElementData): boolean => !data.question?.length;
+export const isEmpty = (data: ElementData): boolean =>
+  !data.question?.length || (data.isGradable && !data.correct);
 
 export const mocks: ElementMocks = {
   displayContexts: [
