@@ -2,6 +2,13 @@
   "name": "@tailor-cms/ce-text-response-edit",
   "description": "Tailor CMS text response authoring component",
   "author": "Studion <info@gostudion.com> (https://github.com/tailor-cms)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tailor-cms/ce-text-response.git",
+    "directory": "packages/edit"
+  },
+  "homepage": "https://github.com/tailor-cms/ce-text-response#readme",
+  "bugs": "https://github.com/tailor-cms/ce-text-response/issues",
   "type": "module",
   "version": "2.0.2",
   "exports": {
