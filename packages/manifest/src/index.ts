@@ -109,7 +109,6 @@ const manifest: ElementManifest = {
   ssr: false,
   isQuestion: true,
   isComposite: true,
-  showFeedback: false,
   initState,
   isEmpty,
   ui,
