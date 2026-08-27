@@ -1,18 +1,21 @@
 <template>
   <div class="tce-text-response">
     <template v-if="elementData.isGradable">
-      <div class="text-title-small mb-2">Answer</div>
-      <VTextarea
-        :clearable="!isReadonly"
-        :model-value="elementData.correct"
-        :readonly="isReadonly"
-        :rules="[(val: string) => !!val || 'Answer is required']"
-        class="my-3"
-        rows="3"
-        variant="outlined"
-        auto-grow
-        @update:model-value="emit('update', { correct: $event })"
-      />
+      <div class="mb-3">
+        <VTextarea
+          :clearable="!isReadonly"
+          :model-value="elementData.correct"
+          :readonly="isReadonly"
+          :rules="[(val: string) => !!val || 'Answer is required']"
+          density="comfortable"
+          label="Correct answer"
+          placeholder="Answer..."
+          rows="3"
+          variant="outlined"
+          auto-grow
+          @update:model-value="emit('update', { correct: $event })"
+        />
+      </div>
     </template>
   </div>
 </template>
